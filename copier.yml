@@ -27,12 +27,7 @@ programming_variant:
 semester:
   type: str
   help: Semester or term
-  default: "{% set month = '%m' | strftime | int %}{% set year = '%Y' | strftime | int %}{% if month >= 4 and month <= 9 %}Winter Semester {{ year }}/{{ '%02d' | format((year + 1) % 100) }}{% else %}Summer Semester {{ year + 1 if month >= 10 else year }}{% endif %}"
-
-exam_date:
-  type: str
-  help: Printed exam date (e.g., 12 February 2027)
-  default: "{{ '%d %B %Y' | strftime }}"
+  default: "{% set month = '%m' | strftime | int %}{% set year = '%Y' | strftime | int %}{% if month >= 4 and month <= 9 %}Winter Semester {{ year }}{% else %}Summer Semester {{ year + 1 if month >= 10 else year }}{% endif %}"
 
 number_of_questions:
   type: int
