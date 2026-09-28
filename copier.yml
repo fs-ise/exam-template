@@ -1,41 +1,47 @@
 _subdirectory: template
 _answers_file: .copier-answers.yml
 
-exam_title:
+course:
   type: str
-  help: Title of this exam/project (used as the Quarto project and document title)
-  default: Final Examination
-  validator: "{% if not exam_title | trim %}Please enter an exam title.{% endif %}"
+  help: Course
+  choices:
+    IT Security Management: IT Security Management
+    Analytics and Big Data: Analytics and Big Data
+    Introduction to Programming: Introduction to Programming
+    New/custom course: custom
 
-course_title:
+custom_course_name:
   type: str
   help: Course name
-  default: Machine Learning for Big Data
+  when: "{{ course == 'custom' }}"
+  validator: "{% if not custom_course_name | trim %}Please enter a course name.{% endif %}"
+
+programming_variant:
+  type: str
+  help: Examination type
+  when: "{{ course == 'Introduction to Programming' }}"
+  choices:
+    Excel: Excel
+    Python: Python
 
 semester:
   type: str
   help: Semester or term
-  default: Winter Semester 2026/27
+  default: "{% set month = '%m' | strftime | int %}{% set year = '%Y' | strftime | int %}{% if month >= 4 and month <= 9 %}Winter Semester {{ year }}/{{ '%02d' | format((year + 1) % 100) }}{% else %}Summer Semester {{ year + 1 if month >= 10 else year }}{% endif %}"
 
 exam_date:
   type: str
   help: Printed exam date (e.g., 12 February 2027)
-  default: 12 February 2027
+  default: "{{ '%d %B %Y' | strftime }}"
 
 number_of_questions:
   type: int
-  help: Number of questions (for cover page scoring table)
-  default: 4
+  help: Number of questions/problems (for the cover-page scoring table)
+  default: "{% if course == 'IT Security Management' %}9{% elif course == 'Introduction to Programming' and programming_variant == 'Python' %}5{% else %}4{% endif %}"
   validator: "{% if number_of_questions < 1 or number_of_questions > 12 %}Choose between 1 and 12.{% endif %}"
 
 total_points:
   type: int
   help: Maximum points
-  default: 60
+  default: "{% if course == 'IT Security Management' %}120{% elif course == 'Introduction to Programming' and programming_variant == 'Excel' %}40{% elif course == 'Introduction to Programming' and programming_variant == 'Python' %}80{% else %}60{% endif %}"
   validator: "{% if total_points < 1 %}Must be positive.{% endif %}"
-
-duration_minutes:
-  type: int
-  help: Exam duration in minutes
-  default: 60
-  validator: "{% if duration_minutes < 1 %}Must be positive.{% endif %}"

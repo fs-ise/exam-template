@@ -1,6 +1,6 @@
 project:
   type: default
-  title: {{ exam_title | tojson }}
+  title: {% if course == 'custom' %}{{ custom_course_name | tojson }}{% else %}{{ course | tojson }}{% endif %}
   render:
     - exam.qmd
   output-dir: _output/assignment
