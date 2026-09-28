@@ -11,6 +11,7 @@ import pytest
 
 
 ROOT = Path(__file__).parents[1]
+QUESTION_COUNTS = (1, 4, 5, 9)
 
 
 def run(*args: str, cwd: Path, env: dict[str, str] | None = None) -> str:
@@ -24,6 +25,60 @@ def run(*args: str, cwd: Path, env: dict[str, str] | None = None) -> str:
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     ).stdout.strip()
+
+
+@pytest.mark.skipif(shutil.which("copier") is None, reason="copier is not installed")
+@pytest.mark.parametrize("number_of_questions", QUESTION_COUNTS)
+def test_generated_exam_question_layout(
+    tmp_path: Path, number_of_questions: int
+) -> None:
+    """Questions have the right points, includes, spacing, and page breaks."""
+    destination = tmp_path / "exam"
+    env = os.environ.copy()
+    env.update(
+        {
+            "GIT_AUTHOR_NAME": "Exam Test",
+            "GIT_AUTHOR_EMAIL": "exam-test@example.invalid",
+            "GIT_COMMITTER_NAME": "Exam Test",
+            "GIT_COMMITTER_EMAIL": "exam-test@example.invalid",
+        }
+    )
+    total_points = 2 * number_of_questions + 1
+
+    run(
+        "copier",
+        "copy",
+        "--trust",
+        "--defaults",
+        "--data",
+        "course=Analytics and Big Data",
+        "--data",
+        f"number_of_questions={number_of_questions}",
+        "--data",
+        f"total_points={total_points}",
+        str(ROOT),
+        str(destination),
+        cwd=tmp_path,
+        env=env,
+    )
+
+    exam = (destination / "exam.qmd").read_text(encoding="utf-8")
+    assert exam.count("\\newpage") == number_of_questions - 1
+    assert "\n\n\n" not in exam
+    assert all(line == line.rstrip() for line in exam.splitlines())
+
+    for question in range(1, number_of_questions + 1):
+        expected_points = 3 if question == 1 else 2
+        heading = f"# Question {question} ({expected_points} points)"
+        include = f"{{{{< include tasks/task_{question}.qmd >}}}}"
+        assert exam.count(heading) == 1
+        assert exam.count(include) == 1
+
+    blocks = exam.split("\n\n")
+    question_blocks = [block for block in blocks if block.startswith("# Question")]
+    include_blocks = [block for block in blocks if block.startswith("{{< include")]
+    assert len(question_blocks) == number_of_questions
+    assert len(include_blocks) == number_of_questions
 
 
 @pytest.mark.skipif(shutil.which("copier") is None, reason="copier is not installed")
