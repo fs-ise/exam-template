@@ -1,9 +1,6 @@
 """Create the numbered task files selected in the Copier questionnaire."""
 
 from pathlib import Path
-{% if _copier_operation == "copy" %}
-import subprocess
-{% endif %}
 
 
 TASK = """Explain one advantage and one limitation of the selected approach.
@@ -30,14 +27,3 @@ for number in range(1, {{ number_of_questions }} + 1):
     (tasks / f"task_{number}.qmd").write_text(TASK, encoding="utf-8")
 
 Path(__file__).unlink()
-
-{% if _copier_operation == "copy" %}
-# A nested destination should still get its own repository, but an existing
-# repository at the destination must not be reinitialized or committed to.
-if not Path(".git").exists():
-    subprocess.run(["git", "init", "--initial-branch=main"], check=True)
-    subprocess.run(["git", "add", "--all"], check=True)
-    subprocess.run(
-        ["git", "commit", "-m", "Initialize exam from template"], check=True
-    )
-{% endif %}

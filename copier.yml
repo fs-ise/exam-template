@@ -1,7 +1,14 @@
 _subdirectory: template
 _answers_file: .copier-answers.yml
 _tasks:
-  - "python .copier_generate_tasks.py"
+  - command: "python .copier_generate_tasks.py"
+  - command: >-
+      python -c 'from pathlib import Path; import subprocess;
+      initialize = not Path(".git").exists();
+      subprocess.run(["git", "init", "--initial-branch=main"], check=True) if initialize else None;
+      subprocess.run(["git", "add", "--all"], check=True) if initialize else None;
+      subprocess.run(["git", "commit", "-m", "Initialize exam from template"], check=True) if initialize else None'
+    when: "{{ _copier_operation == 'copy' }}"
 
 course:
   type: str
