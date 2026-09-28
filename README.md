@@ -3,7 +3,7 @@
 Generate a self-contained Quarto exam project (not a website) directly from GitHub:
 
 ```sh
-uvx copier copy gh:fs-ise/exam-template path_to_new-exam
+uvx copier copy --trust gh:fs-ise/exam-template path_to_new-exam
 cd path_to_new-exam
 make setup
 make exams
