@@ -1,0 +1,29 @@
+"""Create the numbered task files selected in the Copier questionnaire."""
+
+from pathlib import Path
+
+
+TASK = """Explain one advantage and one limitation of the selected approach.
+
+:::{.direction}
+Provide concise answers in the answer booklet.
+:::
+
+:::{.sol}
+**Example solution:** State a justified advantage and a justified limitation.
+:::
+
+:::{.rubric}
+**Grading notes:** Award points for valid explanations, not keywords alone.
+:::
+"""
+
+tasks = Path("tasks")
+tasks.mkdir(exist_ok=True)
+for old_task in tasks.glob("task_*.qmd"):
+    old_task.unlink()
+
+for number in range(1, {{ number_of_questions }} + 1):
+    (tasks / f"task_{number}.qmd").write_text(TASK, encoding="utf-8")
+
+Path(__file__).unlink()

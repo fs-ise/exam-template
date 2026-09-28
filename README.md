@@ -15,6 +15,8 @@ The concise questionnaire asks you to select IT Security Management, Analytics a
 
 Copier proposes course-specific question-count and total-point defaults, both of which remain editable. It also derives an editable semester default using a single calendar year: January through March select the current year's Summer Semester, April through September select the current year's Winter Semester, and October through December select the following year's Summer Semester (for example, `Winter Semester 2026` or `Summer Semester 2027`).
 
-Generated exams do not ask for or print an examination date. Their Quarto metadata explicitly sets `date: false`, preventing Quarto from inserting a date automatically in assignment, solution, or grading output.
+Generated exams do not ask for or print an examination date. The document metadata omits the `date` field, while the assignment profile suppresses Quarto's automatic title block.
+
+Generation creates exactly one numbered task file for each selected question and wires every file into `exam.qmd`. Question points are allocated as integers: each question gets the quotient of total points divided by question count, and the first questions receive any remainder. The same allocation is used in the cover-page scoring table.
 
 The `assign` extension is downloaded on `make setup`, rather than embedded in this template archive. Commit the resulting `_extensions/` in each generated exam repository. The generated Makefile retains the assignment, solution, and grading profiles.

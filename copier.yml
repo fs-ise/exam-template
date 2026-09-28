@@ -1,5 +1,7 @@
 _subdirectory: template
 _answers_file: .copier-answers.yml
+_tasks:
+  - "python .copier_generate_tasks.py"
 
 course:
   type: str
@@ -39,4 +41,4 @@ total_points:
   type: int
   help: Maximum points
   default: "{% if course == 'IT Security Management' %}120{% elif course == 'Introduction to Programming' and programming_variant == 'Excel' %}40{% elif course == 'Introduction to Programming' and programming_variant == 'Python' %}80{% else %}60{% endif %}"
-  validator: "{% if total_points < 1 %}Must be positive.{% endif %}"
+  validator: "{% if total_points < number_of_questions %}Must be at least the number of questions ({{ number_of_questions }}).{% endif %}"

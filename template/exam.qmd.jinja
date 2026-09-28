@@ -1,18 +1,19 @@
 ---
 title: {% if course == 'custom' %}{{ custom_course_name | tojson }}{% else %}{{ course | tojson }}{% endif %}
-{% if course == 'Introduction to Programming' %}
-subtitle: {{ programming_variant | tojson }}
-{% endif %}
-semester: {{ semester | tojson }}
-date: false
+{% if course == 'Introduction to Programming' %}subtitle: {{ programming_variant | tojson }}
+{% endif %}semester: {{ semester | tojson }}
 ---
 
 <!-- The question text, solutions and rubric live together in tasks/*.qmd. -->
 <!-- Points belong in the exam, not in the reusable task files. -->
 
-# Question 1 (10 points)
+{% set base_points = total_points // number_of_questions %}
+{% set remainder = total_points % number_of_questions %}
+{% for i in range(number_of_questions) %}
+# Question {{ i + 1 }} ({{ base_points + (1 if i < remainder else 0) }} points)
 
-{% raw %}{{< include tasks/example.qmd >}}{% endraw %}
+{% raw %}{{< include tasks/task_{% endraw %}{{ i + 1 }}{% raw %}.qmd >}}{% endraw %}
+{% if not loop.last %}
 
-<!-- Duplicate or replace the question heading/include above as needed. -->
-<!-- Update the possible-points row in partials/before-body.tex accordingly. -->
+{% endif %}
+{% endfor %}

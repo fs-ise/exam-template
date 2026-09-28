@@ -42,7 +42,9 @@ At the end of the exam, all distributed materials must be returned.
 \hline
 \textbf{Question} {% for i in range(1, number_of_questions + 1) %}& \textbf{ {{- i -}} } {% endfor %}& \textbf{Total} \\
 \hline
-\textbf{Possible points} {% for i in range(number_of_questions) %}& {% endfor %}& {{ total_points }} \\
+{% set base_points = total_points // number_of_questions %}
+{% set remainder = total_points % number_of_questions %}
+\textbf{Possible points} {% for i in range(number_of_questions) %}& {{ base_points + (1 if i < remainder else 0) }} {% endfor %}& {{ total_points }} \\
 \hline
 \textbf{Points achieved} {% for i in range(number_of_questions) %}& {% endfor %}& \\
 \hline
