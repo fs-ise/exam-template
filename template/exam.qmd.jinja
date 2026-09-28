@@ -1,0 +1,16 @@
+---
+title: {{ exam_title | tojson }}
+subtitle: {{ course_title | tojson }}
+semester: {{ semester | tojson }}
+date: {{ exam_date | tojson }}
+---
+
+<!-- The question text, solutions and rubric live together in tasks/*.qmd. -->
+<!-- Points belong in the exam, not in the reusable task files. -->
+
+# Question 1 (10 points)
+
+{% raw %}{{< include tasks/example.qmd >}}{% endraw %}
+
+<!-- Duplicate or replace the question heading/include above as needed. -->
+<!-- Update the possible-points row in partials/before-body.tex accordingly. -->

@@ -1,0 +1,29 @@
+project:
+  type: default
+  title: {{ exam_title | tojson }}
+  render:
+    - exam.qmd
+  output-dir: _output/assignment
+
+profile:
+  default: assign
+
+format:
+  pdf:
+    keep-tex: true
+    documentclass: scrartcl
+    geometry:
+      - top=2cm
+      - bottom=2cm
+      - left=1.5cm
+      - right=1.5cm
+    include-in-header:
+      text: |
+        \RedeclareSectionCommand[beforeskip=1.5em, afterskip=1.5em]{section}
+
+filters:
+  - assign
+
+execute:
+  echo: false
+  warning: false

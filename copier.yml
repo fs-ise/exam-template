@@ -1,0 +1,41 @@
+_subdirectory: template
+_answers_file: .copier-answers.yml
+
+exam_title:
+  type: str
+  help: Title of this exam/project (used as the Quarto project and document title)
+  default: Final Examination
+  validator: "{% if not exam_title | trim %}Please enter an exam title.{% endif %}"
+
+course_title:
+  type: str
+  help: Course name
+  default: Machine Learning for Big Data
+
+semester:
+  type: str
+  help: Semester or term
+  default: Winter Semester 2026/27
+
+exam_date:
+  type: str
+  help: Printed exam date (e.g., 12 February 2027)
+  default: 12 February 2027
+
+number_of_questions:
+  type: int
+  help: Number of questions (for cover page scoring table)
+  default: 4
+  validator: "{% if number_of_questions < 1 or number_of_questions > 12 %}Choose between 1 and 12.{% endif %}"
+
+total_points:
+  type: int
+  help: Maximum points
+  default: 60
+  validator: "{% if total_points < 1 %}Must be positive.{% endif %}"
+
+duration_minutes:
+  type: int
+  help: Exam duration in minutes
+  default: 60
+  validator: "{% if duration_minutes < 1 %}Must be positive.{% endif %}"

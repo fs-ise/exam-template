@@ -1,0 +1,15 @@
+_output/
+.quarto/
+.quarto-cache/
+*.quarto_ipynb
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.tex
+.venv/
+__pycache__/
+.DS_Store
+Thumbs.db

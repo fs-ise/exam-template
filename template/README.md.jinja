@@ -1,0 +1,31 @@
+# {{ exam_title }}
+
+Course: {{ course_title }}  
+Semester: {{ semester }}  
+Date: {{ exam_date }}  
+Duration: {{ duration_minutes }} minutes; maximum score: {{ total_points }} points.
+
+## Setup and render
+
+Requires Quarto, a working LaTeX installation, and Make. Install the project-local [coatless-quarto/assign](https://github.com/coatless-quarto/assign) extension once (and commit `_extensions/` for reproducibility):
+
+```sh
+make setup
+make exams            # assignment, solution, grading PDFs
+make exams-assign
+make exams-solution
+make exams-grading
+```
+
+Output goes to `_output/assignment`, `_output/solution`, and `_output/grading`. This is a **default document project**, not a website.
+
+Author the exam in `exam.qmd`. Keep reusable question content in `tasks/*.qmd` and include it with Quarto's `{% raw %}{{< include tasks/example.qmd >}}{% endraw %}` shortcode, as demonstrated in `exam.qmd`. Each task can contain common text and `:::{.direction}`, `:::{.sol}`, `:::{.rubric}` sections; the extension selects the content for each profile. Keep points in `exam.qmd`, not in reusable tasks. The cover sheet lives in `partials/before-body.tex` and is shown only in the assignment profile.
+
+**Important:** The initial question count, total points, and duration populate the cover sheet at generation time. If you change them after generation, update `partials/before-body.tex` as well. Complete the question headings and possible-points row to match the actual exam.
+
+## Preflight
+
+- Check points add up to {{ total_points }}, and verify the scoring grid.
+- Check that no solutions or rubric notes appear in the assignment PDF.
+- Inspect grayscale/black-and-white printing of every figure.
+- Verify timing, permitted aids, exam rules, and all generated PDFs before distribution.

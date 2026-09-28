@@ -1,0 +1,55 @@
+$if(has-frontmatter)$
+\frontmatter
+$endif$
+\begin{titlepage}
+\thispagestyle{empty}
+\centering
+\vspace*{2cm}
+{\Huge \textbf{$title$}}\\[0.5cm]
+$if(subtitle)$
+{\Large $subtitle$}\\[0.5cm]
+$endif$
+$if(semester)$
+{\large $semester$}\\[1cm]
+$endif$
+$if(date)$
+{\large $date$}\\[1.5cm]
+$endif$
+\rule{\textwidth}{0.4pt}
+\vspace{1cm}
+\begin{flushleft}
+\textbf{Name:} \rule{8cm}{0.4pt}\\[0.5cm]
+\textbf{Student number:} \rule{6cm}{0.4pt}\\[0.5cm]
+\end{flushleft}
+\vspace{1cm}
+\textbf{Additional information:}
+\raggedright
+\begin{small}
+By starting the exam, you confirm that you are capable of taking it. Withdrawal is not possible once the exam has begun.
+
+By participating, you also confirm that you will complete the exam independently, without outside help and without the use of unauthorized aids. Violations will be treated as breaches of the examination regulations and the Honour Code and may result in serious consequences.
+
+The exam consists of {{ number_of_questions }} questions, all of which must be answered. The maximum total score is {{ total_points }} points. The allotted time is {{ duration_minutes }} minutes.
+
+Please use the answer booklet for your responses and complete the required information on the cover sheet before starting. Scratch paper may be used for drafts and notes; however, only answers written in the answer booklet will be graded.
+
+You may complete the tasks in any order. Please ensure that it is clearly indicated which task you are answering.
+
+At the end of the exam, all distributed materials must be returned.
+\end{small}
+\vfill
+\textbf{For grading:}
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{8pt}
+\begin{tabular}{|l|{% for i in range(number_of_questions) %}c|{% endfor %}c|}
+\hline
+\textbf{Question} {% for i in range(1, number_of_questions + 1) %}& \textbf{ {{- i -}} } {% endfor %}& \textbf{Total} \\
+\hline
+\textbf{Possible points} {% for i in range(number_of_questions) %}& {% endfor %}& {{ total_points }} \\
+\hline
+\textbf{Points achieved} {% for i in range(number_of_questions) %}& {% endfor %}& \\
+\hline
+\end{tabular}
+\vfill
+\end{titlepage}
+\clearpage
