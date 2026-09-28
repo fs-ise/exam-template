@@ -19,4 +19,8 @@ Generated exams do not ask for or print an examination date. The document metada
 
 Generation creates exactly one numbered task file for each selected question and wires every file into `exam.qmd`. Question points are allocated as integers: each question gets the quotient of total points divided by question count, and the first questions receive any remainder. The same allocation is used in the cover-page scoring table.
 
+On initial generation, after creating the numbered task files, Copier initializes the destination as an independent Git repository on branch `main` and creates a commit named `Initialize exam from template`. It uses your existing Git name and email, does not add a remote, and leaves a destination that is already a Git repository untouched. This initialization and automatic commit are skipped by `copier update`.
+
+The generated `.gitignore` excludes rendered PDFs, Quarto working directories, and temporary LaTeX files so that generated build artifacts are not included in the initial commit.
+
 The `assign` extension is downloaded on `make setup`, rather than embedded in this template archive. Commit the resulting `_extensions/` in each generated exam repository. The generated Makefile retains the assignment, solution, and grading profiles.

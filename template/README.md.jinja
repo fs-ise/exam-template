@@ -19,6 +19,10 @@ make exams-grading
 
 Output goes to `_output/assignment`, `_output/solution`, and `_output/grading`. This is a **default document project**, not a website.
 
+Copier initializes this project as an independent Git repository on branch `main` and creates the initial commit `Initialize exam from template`. It uses the Git name and email already configured on your system and does not configure a remote. Subsequent `copier update` runs do not initialize Git or create commits. If the destination was already a Git repository at initial generation, Copier leaves its Git configuration and history unchanged.
+
+Rendered PDFs, Quarto working directories, and temporary LaTeX files are ignored by Git. Commit source files and the downloaded `_extensions/`, but not generated build artifacts.
+
 Author the exam in `exam.qmd`. Copier creates one numbered file per question (`tasks/task_1.qmd`, `tasks/task_2.qmd`, and so on), and `exam.qmd` includes each corresponding file. Each task can contain common text and `:::{.direction}`, `:::{.sol}`, and `:::{.rubric}` sections; the extension selects the content for each profile. Keep points in `exam.qmd`, not in reusable tasks. The cover sheet lives in `partials/before-body.tex` and is shown only in the assignment profile.
 
 The total score is divided into integer question scores automatically. Every question receives `total points // number of questions`, and any remainder is added one point at a time to the first questions. The generated headings and cover-sheet scoring table use the same calculation. If you manually change the question structure after generation, update both `exam.qmd` and `partials/before-body.tex` together.
